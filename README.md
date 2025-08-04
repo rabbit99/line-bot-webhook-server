@@ -34,16 +34,19 @@
 ### 設置步驟
 
 1. **安裝依賴**
+
    ```bash
    npm install
    ```
 
 2. **設置 Clasp**
+
    ```bash
    npx clasp login
    ```
 
 3. **推送程式碼**
+
    ```bash
    npm run push
    ```
@@ -79,10 +82,11 @@
 
 1. 在 Apps Script 編輯器中，點選左側選單的 **設定** (⚙️)
 2. 在 **腳本屬性** 區域，新增以下屬性：
+
    - **屬性名稱**: `LINE_ACCESS_TOKEN`
    - **值**: 您的 LINE Bot Channel Access Token
-   
-   - **屬性名稱**: `LINE_USER_ID` 
+
+   - **屬性名稱**: `LINE_USER_ID`
    - **值**: 您的 LINE User ID（如果需要推送訊息）
 
 ### 本地開發配置（選用）
@@ -98,9 +102,10 @@
 專案需要連接到包含以下工作表的 Google Sheets：
 
 - **主工作表**：用於記錄 SPY 數據 (A2-D2)
+
   - A2: 查詢時間
   - B2: 收盤價
-  - C2: 200週均線
+  - C2: 200 週均線
   - D2: 技術狀態
 
 - **LineBot 工作表**：用於記錄用戶訊息
