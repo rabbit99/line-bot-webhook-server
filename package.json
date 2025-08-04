@@ -1,0 +1,22 @@
+{
+  "name": "line-bot-webhook-server",
+  "version": "1.0.0",
+  "description": "Line Bot Webhook Server with Google Apps Script",
+  "main": "Code.js",
+  "scripts": {
+    "push": "clasp push",
+    "deploy": "clasp push && clasp deploy --deploymentId AKfycbxeInN98ndZjgBiX1uJI7nmZ4oTPErcffkzBCgJpLM6Mpz1Ezq5wfUX4XKXiA0o1oDP",
+    "open": "clasp open",
+    "logs": "clasp logs"
+  },
+  "keywords": [
+    "google-apps-script",
+    "line-bot",
+    "webhook"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@google/clasp": "^2.4.2"
+  }
+}
