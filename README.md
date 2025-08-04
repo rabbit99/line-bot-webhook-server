@@ -62,40 +62,30 @@
 - `npm run deploy` - 推送並部署到生產環境
 - `npm run open` - 在瀏覽器中開啟 Apps Script 編輯器
 - `npm run logs` - 查看執行日誌
-- `npm run setup-triggers` - 設置定時觸發器
-- `npm run list-triggers` - 列出所有觸發器
-- `npm run test-trigger` - 測試觸發器功能
-- `npm run manage-triggers` - 完整的觸發器管理
+- `npm run setup` - 推送程式碼並開啟編輯器（一鍵設置）
 
 ## 定時觸發器設置
 
-### 自動設置（推薦）
+⚠️ **注意**：由於 `clasp run` 命令的 API 權限限制，請使用手動方式設置觸發器。
 
-使用 npm 命令自動設置觸發器：
+### 設置步驟
 
-```bash
-# 推送程式碼並設置觸發器
-npm run setup-triggers
-
-# 查看已設置的觸發器
-npm run list-triggers
-
-# 測試觸發器功能
-npm run test-trigger
-```
-
-### 手動設置
-
-1. **推送程式碼**
+1. **推送程式碼並開啟編輯器**
    ```bash
-   npm run push
+   npm run setup
    ```
 
-2. **在 Google Apps Script 編輯器中執行**
-   - 打開 Apps Script 編輯器：`npm run open`
-   - 在編輯器中選擇 `setupTriggers` 函式
-   - 點擊「執行」按鈕
-   - 授權必要的權限
+2. **在 Apps Script 編輯器中執行觸發器設置**
+   - 在左側檔案列表中選擇 `triggers.js`
+   - 在函式下拉選單中選擇 `setupTriggers`
+   - 點擊「執行」按鈕 ▶️
+   - 首次執行會要求授權，請點擊「檢閱權限」並授權
+   - 查看執行日誌確認觸發器設置成功
+
+3. **管理觸發器**
+   - 選擇 `listTriggers` 函式並執行 - 查看所有觸發器
+   - 選擇 `testTrigger` 函式並執行 - 測試觸發器功能
+   - 選擇 `deleteExistingTriggers` 函式並執行 - 刪除所有觸發器
 
 ### 觸發器配置
 
@@ -104,6 +94,15 @@ npm run test-trigger
 - **每週觸發器**：每週一台灣時間上午 8:00 執行 `notifySPYStatus`
 
 如需修改觸發器時間，請編輯 `triggers.js` 檔案中的 `setupTriggers` 函式。
+
+### 快速設置指令
+
+```bash
+# 一鍵推送並開啟編輯器
+npm run setup
+
+# 然後在編輯器中執行 setupTriggers 函式
+```
 
 ## 檔案說明
 

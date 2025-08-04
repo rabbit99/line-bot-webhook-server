@@ -8,10 +8,7 @@
     "deploy": "clasp push && clasp deploy --deploymentId AKfycbxeInN98ndZjgBiX1uJI7nmZ4oTPErcffkzBCgJpLM6Mpz1Ezq5wfUX4XKXiA0o1oDP",
     "open": "clasp open",
     "logs": "clasp logs",
-    "setup-triggers": "clasp push && clasp run setupTriggers",
-    "list-triggers": "clasp run listTriggers",
-    "test-trigger": "clasp run testTrigger",
-    "manage-triggers": "clasp run manageTriggers"
+    "setup": "npm run push && npm run open"
   },
   "keywords": [
     "google-apps-script",
