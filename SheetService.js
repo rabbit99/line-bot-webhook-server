@@ -95,6 +95,20 @@ function formatUserInfo(event) {
   // 使用者ID
   if (event.source && event.source.userId) {
     userInfo.push(`使用者ID: ${event.source.userId}`);
+
+    // 嘗試獲取使用者顯示名稱
+    try {
+      const userProfile = getUserProfile(event.source.userId);
+      if (userProfile && userProfile.displayName) {
+        userInfo.push(`使用者名稱: ${userProfile.displayName}`);
+        if (userProfile.statusMessage) {
+          userInfo.push(`狀態訊息: ${userProfile.statusMessage}`);
+        }
+      }
+    } catch (error) {
+      Logger.log(`獲取使用者資料時發生錯誤: ${error.message}`);
+      // 如果獲取失敗，不影響其他資訊的記錄
+    }
   }
 
   // 來源類型

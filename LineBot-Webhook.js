@@ -99,3 +99,30 @@ function testSPYDataOnly() {
 
   Logger.log("SPY 數據測試完成");
 }
+
+/**
+ * 測試獲取使用者資料功能
+ * @param {string} userId - 要測試的使用者ID（可選，預設使用您的ID）
+ */
+function testGetUserProfile(userId = "U707efc00d17923f130da58af2db3cc93") {
+  Logger.log(`開始測試獲取使用者資料，使用者ID: ${userId}`);
+
+  try {
+    const userProfile = getUserProfile(userId);
+
+    if (userProfile) {
+      Logger.log("✅ 成功獲取使用者資料：");
+      Logger.log(`使用者ID: ${userProfile.userId}`);
+      Logger.log(`顯示名稱: ${userProfile.displayName}`);
+      Logger.log(`狀態訊息: ${userProfile.statusMessage || "（無）"}`);
+      Logger.log(`語言: ${userProfile.language || "（未知）"}`);
+      Logger.log(`頭像URL: ${userProfile.pictureUrl || "（無）"}`);
+    } else {
+      Logger.log("❌ 獲取使用者資料失敗");
+    }
+  } catch (error) {
+    Logger.log(`❌ 測試過程中發生錯誤: ${error.message}`);
+  }
+
+  Logger.log("使用者資料測試完成");
+}

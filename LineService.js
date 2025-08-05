@@ -312,3 +312,68 @@ function testLineAPIConnection() {
     return false;
   }
 }
+
+/**
+ * 獲取使用者的 LINE 顯示名稱和狀態訊息
+ * @param {string} userId - 使用者ID
+ * @returns {Object|null} 使用者資料物件或 null（如果失敗）
+ */
+function getUserProfile(userId) {
+  const LINE_ACCESS_TOKEN =
+    PropertiesService.getScriptProperties().getProperty("LINE_ACCESS_TOKEN");
+
+  if (!LINE_ACCESS_TOKEN) {
+    Logger.log("❌ LINE_ACCESS_TOKEN 未設置");
+    writeErrorToSheet("LINE_ACCESS_TOKEN 未設置", "獲取使用者資料");
+    return null;
+  }
+
+  const url = `https://api.line.me/v2/bot/profile/${userId}`;
+  const headers = {
+    Authorization: "Bearer " + LINE_ACCESS_TOKEN,
+  };
+
+  const options = {
+    method: "get",
+    headers: headers,
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(url, options);
+    const responseCode = response.getResponseCode();
+
+    if (responseCode === 200) {
+      const userProfile = JSON.parse(response.getContentText());
+      Logger.log(`✅ 成功獲取使用者資料: ${JSON.stringify(userProfile)}`);
+
+      return {
+        userId: userProfile.userId,
+        displayName: userProfile.displayName,
+        statusMessage: userProfile.statusMessage || "",
+        pictureUrl: userProfile.pictureUrl || "",
+        language: userProfile.language || "",
+      };
+    } else {
+      Logger.log(`❌ 獲取使用者資料失敗，狀態碼: ${responseCode}`);
+      Logger.log(`回應內容: ${response.getContentText()}`);
+
+      let errorContext = "";
+      if (responseCode === 403) {
+        errorContext = "Bot 未與該使用者成為好友，無法獲取資料";
+      } else if (responseCode === 404) {
+        errorContext = "找不到該使用者";
+      }
+
+      writeErrorToSheet(
+        `獲取使用者資料失敗 ${responseCode}: ${errorContext}`,
+        "獲取使用者資料"
+      );
+      return null;
+    }
+  } catch (error) {
+    const errorMessage = `獲取使用者資料時發生錯誤: ${error.message}`;
+    Logger.log(`❌ ${errorMessage}`);
+    writeErrorToSheet(error.message, "獲取使用者資料");
+    return null;
+  }
+}
