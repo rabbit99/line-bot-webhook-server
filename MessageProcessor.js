@@ -14,6 +14,14 @@ function processUserMessage(userMessage, replyToken, event) {
     // 記錄訊息到 Google Sheet
     writeMessageToSheet(userMessage, event);
 
+    // 檢查是否為股票查詢格式（查XXX）
+    const stockSymbol = extractStockSymbol(userMessage);
+    if (stockSymbol) {
+      handleStockQuery(stockSymbol, replyToken);
+      Logger.log(`已處理股票查詢訊息: ${userMessage} -> ${stockSymbol}`);
+      return;
+    }
+
     // 根據訊息內容進行路由處理
     switch (userMessage.toLowerCase().trim()) {
       case "查spy":
@@ -78,6 +86,8 @@ function handleHelpRequest(replyToken) {
   const helpMessage =
     "🤖 LINE Bot 使用說明\n\n" +
     "📈 查SPY - 查詢 SPY ETF 當前價格和技術指標\n" +
+    "📊 查[股票代號] - 查詢指定股票的價格和技術指標\n" +
+    "   例如：查NVDA、查AAPL、查TSLA\n" +
     "🍼 呼叫寶比 - 呼叫寶比助手\n" +
     "❓ 幫助 - 顯示此說明訊息\n" +
     "📋 功能 - 顯示所有可用指令\n\n" +
@@ -94,10 +104,12 @@ function handleCommandList(replyToken) {
   const commandMessage =
     "📋 可用指令列表：\n\n" +
     "• 查SPY\n" +
+    "• 查[股票代號] (例如：查NVDA、查AAPL)\n" +
     "• 呼叫寶比\n" +
     "• 幫助 / help\n" +
     "• 功能 / 指令\n\n" +
-    "💡 提示：指令不區分大小寫";
+    "💡 提示：指令不區分大小寫\n" +
+    "📊 支援查詢任何美股代號的技術指標";
 
   replyToLINE(replyToken, commandMessage);
 }

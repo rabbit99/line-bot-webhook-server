@@ -24,6 +24,55 @@ function updateSheetWithSPY(spy) {
 }
 
 /**
+ * 更新 Google Sheet 中的股票數據到指定工作表
+ * @param {Object} stockData - 股票數據物件
+ * @param {string} sheetName - 工作表名稱，預設為股票代號
+ */
+function updateSheetWithStock(stockData, sheetName = null) {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const targetSheetName = sheetName || stockData.symbol;
+
+    // 嘗試獲取或創建指定的工作表
+    let sheet = spreadsheet.getSheetByName(targetSheetName);
+
+    if (!sheet) {
+      // 如果工作表不存在，創建新的工作表
+      sheet = spreadsheet.insertSheet(targetSheetName);
+
+      // 設置標題行
+      sheet.getRange("A1").setValue("時間");
+      sheet.getRange("B1").setValue("收盤價");
+      sheet.getRange("C1").setValue("200週均線");
+      sheet.getRange("D1").setValue("狀態");
+
+      Logger.log(`已創建新工作表: ${targetSheetName}`);
+    }
+
+    // 找到下一個可用的行
+    const lastRow = sheet.getLastRow();
+    const nextRow = lastRow + 1;
+
+    // 更新數據
+    sheet.getRange(nextRow, 1).setValue(new Date());
+    sheet.getRange(nextRow, 2).setValue(stockData.close);
+    sheet.getRange(nextRow, 3).setValue(stockData.sma200);
+    sheet.getRange(nextRow, 4).setValue(stockData.status);
+
+    Logger.log(
+      `${stockData.symbol} 數據已成功更新到 Google Sheet (${targetSheetName})`
+    );
+  } catch (error) {
+    const errorMessage = `更新 ${stockData.symbol} 數據到 Google Sheet 時發生錯誤: ${error.message}`;
+    Logger.log(errorMessage);
+    writeErrorToSheet(
+      error.message,
+      `更新 ${stockData.symbol} 數據到 Google Sheet`
+    );
+  }
+}
+
+/**
  * 將訊息和使用者資訊寫入 Google Sheet
  * @param {string} message - 使用者訊息
  * @param {Object} event - LINE Bot 事件物件
